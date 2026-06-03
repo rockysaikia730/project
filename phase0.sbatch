@@ -1,5 +1,6 @@
 #!/bin/bash
 #SBATCH --account=math-454
+#SBATCH --partition=academic
 #SBATCH --job-name=lbm-phase0
 #SBATCH --time=01:00:00
 #SBATCH --nodes=1
@@ -54,7 +55,7 @@ for cfg in "nx=800 ny=400" "nx=1600 ny=800" "nx=3200 ny=1600"; do
 done
 
 # ----------------------------------------------------------------------
-# Step 0.4: Profile with perf (Linux sampling profiler).
+# Step 0.4: Profile with perf
 # Falls back to a note if perf is restricted on JED compute nodes.
 # ----------------------------------------------------------------------
 echo

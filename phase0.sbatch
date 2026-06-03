@@ -1,5 +1,6 @@
 #!/bin/bash
 #SBATCH --account=math-454
+#SBATCH --partition=academic
 #SBATCH --job-name=lbm-phase0
 #SBATCH --time=01:00:00
 #SBATCH --nodes=1

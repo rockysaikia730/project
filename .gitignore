@@ -34,3 +34,4 @@ venv/
 .vscode/
 .idea/
 vis/
+.vis/

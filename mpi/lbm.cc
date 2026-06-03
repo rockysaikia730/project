@@ -130,6 +130,7 @@ LBM_MPI::collide()
   for (std::size_t y = 0; y < ny_; ++y) {
     for (std::size_t x_loc = 1; x_loc <= nx_local_; ++x_loc) {
       const std::size_t k = y * nx_p + x_loc;
+      if (solid_[k]) continue;
       double rho = 0.0, mx = 0.0, my = 0.0;
       for (int i = 0; i < Q; ++i) {
         const double fi = f_[i * N + k];

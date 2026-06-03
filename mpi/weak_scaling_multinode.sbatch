@@ -4,7 +4,7 @@
 #SBATCH --job-name=lbm-weak-mn
 #SBATCH --output=weak_mn_%j.log
 #SBATCH --time=01:00:00
-#SBATCH --nodes=4
+#SBATCH --nodes=2
 #SBATCH --ntasks-per-node=16
 #SBATCH --cpus-per-task=1
 #SBATCH --exclusive
@@ -44,7 +44,7 @@ NY=400
 NX_PER_RANK=400
 STEPS=2000
 
-for N in 1 2 4; do
+for N in 1 2; do
   NP=$(( RANKS_PER_NODE * N ))
   NX=$(( NX_PER_RANK * NP ))
   echo "=================================================="

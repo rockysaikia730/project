@@ -85,8 +85,10 @@ main(int argc, char ** argv)
   const int    bx     = get<int>(kv, "block_x", 32);
   const int    by     = get<int>(kv, "block_y", 8);
   const Layout layout = layout_from_string(get_string(kv, "layout", "soa"));
+  const bool   fused  = get<int>(kv, "fused", 0) != 0;
 
   LBM_CUDA solver(nx, ny, u_in, Re, cx0, cy0, cr0, layout, bx, by);
+  solver.set_fused(fused);
   if (cr1 > 0.0) solver.add_second_cylinder(cx1, cy1, cr1);
   solver.initialize();
 
@@ -97,6 +99,7 @@ main(int argc, char ** argv)
             << "  u_in          : " << u_in << "\n"
             << "  tau           : " << solver.tau() << "\n"
             << "  layout        : " << lname << "\n"
+            << "  kernel        : " << (fused ? "fused collide-stream" : "separate") << "\n"
             << "  block         : " << bx << " x " << by << "\n"
             << "  steps         : " << steps << "\n"
             << "  output every  : " << every << " (0 = off)\n"

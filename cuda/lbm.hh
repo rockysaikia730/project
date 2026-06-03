@@ -49,6 +49,12 @@ public:
   void initialize();
   void step();
 
+  /// Enable the fused collide-stream kernel (one DRAM pass, 144 B/cell)
+  /// instead of the separate collide+bounce+stream kernels (288 B/cell).
+  /// Uses bounce-back-on-link at solid walls. SoA only.
+  void set_fused(bool f) { fused_ = f; }
+  bool fused() const { return fused_; }
+
   /// Copy the device field into the host mirror so the accessors below read
   /// up-to-date data. Needed before write_snapshot.
   void sync_to_host();
@@ -85,6 +91,7 @@ private:
   double      u_in_, tau_;
   Layout      layout_;
   int         bx_, by_;
+  bool        fused_ = false;
 
   // Device buffers.
   double  * d_f_     = nullptr;   ///< 9 * nx * ny doubles

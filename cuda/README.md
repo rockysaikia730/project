@@ -38,6 +38,7 @@ Same as serial, plus:
 |---|---|---|
 | `block_x`, `block_y` | CUDA block dimensions (threads/block = block_x*block_y) | 32, 8 |
 | `layout` | `soa` or `aos` | `soa` |
+| `fused` | `1` = fused collide-stream (144 B/cell), `0` = separate kernels (288 B/cell) | `0` |
 | `every` | HDF5 snapshot cadence; 0 disables I/O | 0 |
 | `probe` | probe CSV path; `/dev/null` disables the per-step D2H | probe.csv |
 

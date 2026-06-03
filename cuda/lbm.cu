@@ -150,6 +150,58 @@ stream_kernel(const double * f, double * ftmp,
   }
 }
 
+// Fused collide + stream in one DRAM pass (pull scheme, post-collision
+// storage, halfway bounce-back-on-link). Reads the 9 distributions arriving
+// at this cell from its neighbours (reflecting at solid/boundary links),
+// computes the moments (BGK conserves rho and momentum, so moments of the
+// post-collision state equal those of the pre-collision state), relaxes, and
+// writes the 9 post-collision values. 9 reads + 9 writes = 144 B/cell.
+template <Layout L>
+__global__ void
+fused_kernel(const double * f_old, double * f_new, const uint8_t * solid,
+             std::size_t nx, std::size_t ny, double inv_tau)
+{
+  const std::size_t x = blockIdx.x * blockDim.x + threadIdx.x;
+  const std::size_t y = blockIdx.y * blockDim.y + threadIdx.y;
+  if (x >= nx || y >= ny) return;
+
+  const std::size_t N    = nx * ny;
+  const std::size_t cell = y * nx + x;
+
+  if (solid[cell]) {
+    // Solid cells take no part in the fluid update (reflection happens at the
+    // neighbouring fluid cells). Copy through so the buffer stays well-defined.
+    for (int i = 0; i < 9; ++i)
+      f_new[fidx<L>(i, cell, N)] = f_old[fidx<L>(i, cell, N)];
+    return;
+  }
+
+  double fi[9], rho = 0.0, mx = 0.0, my = 0.0;
+  for (int i = 0; i < 9; ++i) {
+    const long sx = long(x) - c_cx[i];
+    const long sy = long(y) - c_cy[i];
+    double val;
+    if (sx >= 0 && sx < long(nx) && sy >= 0 && sy < long(ny) &&
+        !solid[std::size_t(sy) * nx + std::size_t(sx)]) {
+      val = f_old[fidx<L>(i, std::size_t(sy) * nx + std::size_t(sx), N)];
+    } else {
+      // bounce-back-on-link: reflect the opposite population at this cell.
+      val = f_old[fidx<L>(c_opp[i], cell, N)];
+    }
+    fi[i] = val;
+    rho += val; mx += c_cx[i] * val; my += c_cy[i] * val;
+  }
+
+  const double ux = (rho > 0.0) ? mx / rho : 0.0;
+  const double uy = (rho > 0.0) ? my / rho : 0.0;
+  const double u2 = ux * ux + uy * uy;
+  for (int i = 0; i < 9; ++i) {
+    const double cu  = c_cx[i] * ux + c_cy[i] * uy;
+    const double feq = c_w[i] * rho * (1.0 + 3.0 * cu + 4.5 * cu * cu - 1.5 * u2);
+    f_new[fidx<L>(i, cell, N)] = fi[i] - inv_tau * (fi[i] - feq);
+  }
+}
+
 template <Layout L>
 __global__ void
 inlet_kernel(double * f, const uint8_t * solid,
@@ -295,10 +347,16 @@ LBM_CUDA::step_impl()
   const dim3 grid((nx_ + bx_ - 1) / bx_, (ny_ + by_ - 1) / by_);
   const double inv_tau = 1.0 / tau_;
 
-  collide_kernel<L><<<grid, block>>>(d_f_, d_solid_, nx_, ny_, inv_tau);
-  bounce_back_kernel<L><<<grid, block>>>(d_f_, d_solid_, nx_, ny_);
-  stream_kernel<L><<<grid, block>>>(d_f_, d_ftmp_, nx_, ny_);
-  std::swap(d_f_, d_ftmp_);
+  if (fused_) {
+    // One DRAM pass: collide + stream + bounce-back-on-link.
+    fused_kernel<L><<<grid, block>>>(d_f_, d_ftmp_, d_solid_, nx_, ny_, inv_tau);
+    std::swap(d_f_, d_ftmp_);
+  } else {
+    collide_kernel<L><<<grid, block>>>(d_f_, d_solid_, nx_, ny_, inv_tau);
+    bounce_back_kernel<L><<<grid, block>>>(d_f_, d_solid_, nx_, ny_);
+    stream_kernel<L><<<grid, block>>>(d_f_, d_ftmp_, nx_, ny_);
+    std::swap(d_f_, d_ftmp_);
+  }
 
   const int tcol = 128;
   const int gcol = int((ny_ + tcol - 1) / tcol);

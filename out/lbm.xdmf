@@ -1,0 +1,149 @@
+<?xml version="1.0" ?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf Version="3.0">
+  <Domain>
+    <Grid Name="LBM" GridType="Collection" CollectionType="Temporal">
+      <Grid Name="step_000000" GridType="Uniform">
+        <Time Value="500"/>
+        <Topology TopologyType="2DCoRectMesh" Dimensions="400 800"/>
+        <Geometry GeometryType="ORIGIN_DXDY">
+          <DataItem Format="XML" Dimensions="2">0.0 0.0</DataItem>
+          <DataItem Format="XML" Dimensions="2">1.0 1.0</DataItem>
+        </Geometry>
+        <Attribute Name="rho" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000000.h5:/rho</DataItem>
+        </Attribute>
+        <Attribute Name="ux" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000000.h5:/ux</DataItem>
+        </Attribute>
+        <Attribute Name="uy" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000000.h5:/uy</DataItem>
+        </Attribute>
+        <Attribute Name="vorticity" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000000.h5:/vorticity</DataItem>
+        </Attribute>
+        <Attribute Name="solid" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="UChar">lbm_mask.h5:/solid</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="step_000001" GridType="Uniform">
+        <Time Value="1000"/>
+        <Topology TopologyType="2DCoRectMesh" Dimensions="400 800"/>
+        <Geometry GeometryType="ORIGIN_DXDY">
+          <DataItem Format="XML" Dimensions="2">0.0 0.0</DataItem>
+          <DataItem Format="XML" Dimensions="2">1.0 1.0</DataItem>
+        </Geometry>
+        <Attribute Name="rho" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000001.h5:/rho</DataItem>
+        </Attribute>
+        <Attribute Name="ux" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000001.h5:/ux</DataItem>
+        </Attribute>
+        <Attribute Name="uy" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000001.h5:/uy</DataItem>
+        </Attribute>
+        <Attribute Name="vorticity" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000001.h5:/vorticity</DataItem>
+        </Attribute>
+        <Attribute Name="solid" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="UChar">lbm_mask.h5:/solid</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="step_000002" GridType="Uniform">
+        <Time Value="1500"/>
+        <Topology TopologyType="2DCoRectMesh" Dimensions="400 800"/>
+        <Geometry GeometryType="ORIGIN_DXDY">
+          <DataItem Format="XML" Dimensions="2">0.0 0.0</DataItem>
+          <DataItem Format="XML" Dimensions="2">1.0 1.0</DataItem>
+        </Geometry>
+        <Attribute Name="rho" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000002.h5:/rho</DataItem>
+        </Attribute>
+        <Attribute Name="ux" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000002.h5:/ux</DataItem>
+        </Attribute>
+        <Attribute Name="uy" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000002.h5:/uy</DataItem>
+        </Attribute>
+        <Attribute Name="vorticity" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000002.h5:/vorticity</DataItem>
+        </Attribute>
+        <Attribute Name="solid" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="UChar">lbm_mask.h5:/solid</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="step_000003" GridType="Uniform">
+        <Time Value="2000"/>
+        <Topology TopologyType="2DCoRectMesh" Dimensions="400 800"/>
+        <Geometry GeometryType="ORIGIN_DXDY">
+          <DataItem Format="XML" Dimensions="2">0.0 0.0</DataItem>
+          <DataItem Format="XML" Dimensions="2">1.0 1.0</DataItem>
+        </Geometry>
+        <Attribute Name="rho" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000003.h5:/rho</DataItem>
+        </Attribute>
+        <Attribute Name="ux" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000003.h5:/ux</DataItem>
+        </Attribute>
+        <Attribute Name="uy" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000003.h5:/uy</DataItem>
+        </Attribute>
+        <Attribute Name="vorticity" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000003.h5:/vorticity</DataItem>
+        </Attribute>
+        <Attribute Name="solid" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="UChar">lbm_mask.h5:/solid</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="step_000004" GridType="Uniform">
+        <Time Value="2500"/>
+        <Topology TopologyType="2DCoRectMesh" Dimensions="400 800"/>
+        <Geometry GeometryType="ORIGIN_DXDY">
+          <DataItem Format="XML" Dimensions="2">0.0 0.0</DataItem>
+          <DataItem Format="XML" Dimensions="2">1.0 1.0</DataItem>
+        </Geometry>
+        <Attribute Name="rho" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000004.h5:/rho</DataItem>
+        </Attribute>
+        <Attribute Name="ux" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000004.h5:/ux</DataItem>
+        </Attribute>
+        <Attribute Name="uy" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000004.h5:/uy</DataItem>
+        </Attribute>
+        <Attribute Name="vorticity" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000004.h5:/vorticity</DataItem>
+        </Attribute>
+        <Attribute Name="solid" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="UChar">lbm_mask.h5:/solid</DataItem>
+        </Attribute>
+      </Grid>
+    </Grid>
+  </Domain>
+</Xdmf>
+ridType="Uniform">
+        <Time Value="3000"/>
+        <Topology TopologyType="2DCoRectMesh" Dimensions="400 800"/>
+        <Geometry GeometryType="ORIGIN_DXDY">
+          <DataItem Format="XML" Dimensions="2">0.0 0.0</DataItem>
+          <DataItem Format="XML" Dimensions="2">1.0 1.0</DataItem>
+        </Geometry>
+        <Attribute Name="rho" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000005.h5:/rho</DataItem>
+        </Attribute>
+        <Attribute Name="ux" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000005.h5:/ux</DataItem>
+        </Attribute>
+        <Attribute Name="uy" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000005.h5:/uy</DataItem>
+        </Attribute>
+        <Attribute Name="vorticity" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="Float" Precision="8">lbm_000005.h5:/vorticity</DataItem>
+        </Attribute>
+        <Attribute Name="solid" AttributeType="Scalar" Center="Node">
+          <DataItem Format="HDF" Dimensions="400 800" NumberType="UChar">lbm_mask.h5:/solid</DataItem>
+        </Attribute>
+      </Grid>
+    </Grid>
+  </Domain>
+</Xdmf>

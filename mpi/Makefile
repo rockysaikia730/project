@@ -2,7 +2,7 @@
 #   module load gcc openmpi hdf5
 # After `module load hdf5`, $HDF5_ROOT is set automatically.
 
-CXX      ?= mpicxx
+CXX      := mpicxx
 LD       := $(CXX)
 HDF5_INC := $(if $(strip $(HDF5_ROOT)),-I$(HDF5_ROOT)/include)
 HDF5_LIB := $(if $(strip $(HDF5_ROOT)),-L$(HDF5_ROOT)/lib)

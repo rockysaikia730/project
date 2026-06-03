@@ -2,6 +2,7 @@
 #define LBM_MPI_OUTPUT_HH
 
 #include <cstddef>
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <mpi.h>
@@ -33,10 +34,6 @@ public:
 
 private:
   void write_root_xdmf() const;
-  void gather_double_field(const std::vector<double> & local,
-                                 std::vector<double> & global) const;
-  void gather_uint8_field (const std::vector<std::uint8_t> & local,
-                                 std::vector<std::uint8_t> & global) const;
 
   std::string  prefix_;
   std::string  basename_;
@@ -46,9 +43,6 @@ private:
 
   MPI_Comm comm_;
   int rank_, psize_;
-
-  // Per-rank counts and displacements for MPI_Gatherv over (nx_local * ny).
-  std::vector<int> counts_, displs_;
 };
 
 #endif  // LBM_MPI_OUTPUT_HH

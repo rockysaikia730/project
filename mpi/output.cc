@@ -104,43 +104,7 @@ XDMFWriterMPI::XDMFWriterMPI(const std::string & prefix,
   MPI_Comm_rank(comm_, &rank_);
   MPI_Comm_size(comm_, &psize_);
 
-  // Pre-compute counts and displacements for MPI_Gatherv over the
-  // (nx_local * ny) doubles each rank contributes.
-  counts_.resize(psize_);
-  displs_.resize(psize_);
-  const std::size_t base = nx_ / std::size_t(psize_);
-  const std::size_t rem  = nx_ % std::size_t(psize_);
-  std::size_t offset = 0;
-  for (int r = 0; r < psize_; ++r) {
-    const std::size_t nx_loc = base + (std::size_t(r) < rem ? 1 : 0);
-    counts_[r] = int(nx_loc * ny_);
-    displs_[r] = int(offset);
-    offset += nx_loc * ny_;
-  }
-
   if (rank_ == 0) mkdir_p(parent_dir(prefix_));
-}
-
-void
-XDMFWriterMPI::gather_double_field(const std::vector<double> & local,
-                                         std::vector<double> & global) const
-{
-  if (rank_ == 0) global.resize(nx_ * ny_);
-  MPI_Gatherv(local.data(), int(local.size()), MPI_DOUBLE,
-              rank_ == 0 ? global.data() : nullptr,
-              counts_.data(), displs_.data(), MPI_DOUBLE,
-              0, comm_);
-}
-
-void
-XDMFWriterMPI::gather_uint8_field(const std::vector<std::uint8_t> & local,
-                                        std::vector<std::uint8_t> & global) const
-{
-  if (rank_ == 0) global.resize(nx_ * ny_);
-  MPI_Gatherv(local.data(), int(local.size()), MPI_UINT8_T,
-              rank_ == 0 ? global.data() : nullptr,
-              counts_.data(), displs_.data(), MPI_UINT8_T,
-              0, comm_);
 }
 
 void

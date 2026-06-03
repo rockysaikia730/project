@@ -33,3 +33,4 @@ venv/
 *.swp
 .vscode/
 .idea/
+vis/

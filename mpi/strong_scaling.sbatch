@@ -5,7 +5,7 @@
 #SBATCH --output=strong_%j.log
 #SBATCH --time=01:30:00
 #SBATCH --nodes=1
-#SBATCH --ntasks=32
+#SBATCH --ntasks=72
 #SBATCH --cpus-per-task=1
 #SBATCH --exclusive
 
@@ -32,7 +32,7 @@ make clean && make
 RESULTS=strong_results_${SLURM_JOB_ID}.csv
 echo "nx,ny,np,steps,wall_time_s,mlups" > "$RESULTS"
 
-PROCS=(1 2 4 8 16 32)
+PROCS=(1 2 4 8 16 32 64)
 
 # size label : "nx ny steps"
 declare -a CONFIGS=(

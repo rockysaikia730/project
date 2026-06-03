@@ -5,7 +5,7 @@
 #SBATCH --output=weak_%j.log
 #SBATCH --time=01:00:00
 #SBATCH --nodes=1
-#SBATCH --ntasks=32
+#SBATCH --ntasks=72
 #SBATCH --cpus-per-task=1
 #SBATCH --exclusive
 
@@ -31,7 +31,7 @@ make clean && make
 RESULTS=weak_results_${SLURM_JOB_ID}.csv
 echo "nx,ny,np,steps,wall_time_s,mlups" > "$RESULTS"
 
-PROCS=(1 2 4 8 16 32)
+PROCS=(1 2 4 8 16 32 64)
 
 NY=400
 NX_PER_RANK=400      # each rank owns 400 x 400 = 160k cells

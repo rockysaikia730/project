@@ -29,19 +29,30 @@ from matplotlib.ticker import ScalarFormatter
 
 def read_rows(paths):
     rows = []
+    skipped = 0
     for pat in paths:
         for path in glob.glob(pat):
             with open(path, newline="") as fh:
                 for r in csv.DictReader(fh):
-                    rows.append(dict(
-                        nx=int(r["nx"]), ny=int(r["ny"]),
-                        bx=int(r["block_x"]), by=int(r["block_y"]),
-                        layout=r["layout"].strip(),
-                        kernel=r.get("kernel", "separate").strip(),
-                        mlups=float(r["mlups"]),
-                        cells=int(r["nx"]) * int(r["ny"]),
-                        tpb=int(r["block_x"]) * int(r["block_y"]),
-                    ))
+                    # Skip blank/partial rows (e.g. a run that crashed and
+                    # produced no CSV line, leaving empty fields).
+                    if not r.get("nx") or not r.get("mlups"):
+                        skipped += 1
+                        continue
+                    try:
+                        rows.append(dict(
+                            nx=int(r["nx"]), ny=int(r["ny"]),
+                            bx=int(r["block_x"]), by=int(r["block_y"]),
+                            layout=r["layout"].strip(),
+                            kernel=r.get("kernel", "separate").strip(),
+                            mlups=float(r["mlups"]),
+                            cells=int(r["nx"]) * int(r["ny"]),
+                            tpb=int(r["block_x"]) * int(r["block_y"]),
+                        ))
+                    except (ValueError, KeyError):
+                        skipped += 1
+    if skipped:
+        print(f"warning: skipped {skipped} malformed/empty row(s)")
     return rows
 
 

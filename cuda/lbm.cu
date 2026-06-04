@@ -261,7 +261,7 @@ LBM_CUDA::LBM_CUDA(std::size_t nx, std::size_t ny,
                    Layout layout, int block_x, int block_y)
   : nx_(nx), ny_(ny), u_in_(u_in), tau_(0.0),
     layout_(layout), bx_(block_x), by_(block_y),
-    h_f_(9 * nx * ny, 0.0), h_solid_(nx * ny, 0)
+    h_solid_(nx * ny, 0)   // h_f_ is allocated lazily in sync_to_host()
 {
   const double nu = u_in_ * (2.0 * cyl_r) / Re;
   tau_ = 3.0 * nu + 0.5;
@@ -389,6 +389,9 @@ void
 LBM_CUDA::sync_to_host()
 {
   CUDA_CHECK(cudaDeviceSynchronize());
+  // Allocate the host mirror on first use (timing runs never call this, so
+  // large grids avoid a multi-GB host allocation that can exceed --mem).
+  if (h_f_.size() != 9 * nx_ * ny_) h_f_.resize(9 * nx_ * ny_);
   CUDA_CHECK(cudaMemcpy(h_f_.data(), d_f_,
                         9 * nx_ * ny_ * sizeof(double), cudaMemcpyDeviceToHost));
 }
